@@ -49,13 +49,10 @@ public:
         return f.Result(edge1, edge2);
     }
 
-
     static ShapeResult pipe(double outside_diameter, double wall_thickness, double bending_radius, const Vector3Array &points)
     {
         std::vector<Vector3> pts = vecFromJSArray<Vector3>(points);
-
         BRepBuilderAPI_MakeWire makeWire;
-
         std::vector<gp_Pnt> pointVec;
         std::vector<TopoDS_Edge> edgeVec;
         std::vector<TopoDS_Edge> filletVec;
@@ -85,43 +82,22 @@ public:
                     pointVec.push_back(p3);
                     TopoDS_Edge ed1 = BRepBuilderAPI_MakeEdge(p1, p2).Edge();
                     TopoDS_Edge ed2 = BRepBuilderAPI_MakeEdge(p2, p3).Edge();
-                    ChFi2d_AnaFilletAlgo f = ChFi2d_AnaFilletAlgo();
-                    double a = ((p2.Y() - p1.Y()) * (p3.Z() - p1.Z()) - (p2.Z() - p1.Z()) * (p3.Y() - p1.Y()));
-                    double b = ((p2.Z() - p1.Z()) * (p3.X() - p1.X()) - (p2.X() - p1.X()) * (p3.Z() - p1.Z()));
-                    double c = ((p2.X() - p1.X()) * (p3.Y() - p1.Y()) - (p2.Y() - p1.Y()) * (p3.X() - p1.X()));
-                    double d = (0 - (a * p1.X() + b * p1.Y() + c * p1.Z()));
-                    gp_Pln plane1 = gp_Pln(a, b, c, d);
-                    f.Init(ed1, ed2, plane1);
-                    f.Perform(bending_radius);
-                    TopoDS_Edge fillet = f.Result(ed1, ed2);
-                    filletVec.push_back(fillet);
+                    filletVec.push_back(filletEdges(ed1, ed2, p1, p2, p3, bending_radius));
                     edgeVec.push_back(ed1);
                     edgeVec.push_back(ed2);
                 }
                 else
                 {
-                    // gp_Pnt p1 = pointVec[index];
-                    // gp_Pnt p2 = pointVec[index+1];
+                    gp_Pnt& p1 = pointVec[index];
+                    gp_Pnt& p2 = pointVec[index+1];
                     gp_Pnt p3 = Vector3::toPnt(pts[index+2]);
                     pointVec.push_back(p3);
-                    // TopoDS_Edge ed1 = edgeVec[index];
+                    TopoDS_Edge& ed1 = edgeVec[index];
                     TopoDS_Edge ed2 = BRepBuilderAPI_MakeEdge(pointVec[index+1], p3).Edge();
-                    ChFi2d_AnaFilletAlgo f = ChFi2d_AnaFilletAlgo();
-                    double a = ((pointVec[index+1].Y() - pointVec[index].Y()) * (p3.Z() - pointVec[index].Z()) - (pointVec[index+1].Z() - pointVec[index].Z()) * (p3.Y() - pointVec[index].Y()));
-                    double b = ((pointVec[index+1].Z() - pointVec[index].Z()) * (p3.X() - pointVec[index].X()) - (pointVec[index+1].X() - pointVec[index].X()) * (p3.Z() - pointVec[index].Z()));
-                    double c = ((pointVec[index+1].X() - pointVec[index].X()) * (p3.Y() - pointVec[index].Y()) - (pointVec[index+1].Y() - pointVec[index].Y()) * (p3.X() - pointVec[index].X()));
-                    double d = (0 - (a * pointVec[index].X() + b * pointVec[index].Y() + c * pointVec[index].Z()));
-                    gp_Pln plane1 = gp_Pln(a, b, c, d);
-                    f.Init(edgeVec[index], ed2, plane1);
-                    f.Perform(bending_radius);
-                    TopoDS_Edge fillet = f.Result(edgeVec[index], ed2);
-                    filletVec.push_back(fillet);
+                    filletVec.push_back(filletEdges(ed1, ed2, p1, p2, p3, bending_radius));
                     edgeVec.push_back(ed2);
                 }
-
-                
             }
-
             for (int index = 0; index < edgeVec.size(); index = index + 1)
             {
                 if (index == edgeVec.size()-1)
@@ -135,7 +111,10 @@ public:
                 }
             }
         }
-
+        if (!makeWire.IsDone())
+        {
+            return ShapeResult{TopoDS_Shape(), false, "Failed to create pipe"};
+        }
         TopoDS_Wire wire = makeWire.Wire();
         // the pipe (outer part)
         gp_Pnt p1 = Vector3::toPnt(pts[0]);
@@ -154,12 +133,6 @@ public:
         TopoDS_Shape pipe_inner = BRepOffsetAPI_MakePipe(wire, profile_face_inner).Shape();
         // cut the inner part from the outer part
         TopoDS_Shape pipe_cut = BRepAlgoAPI_Cut(pipe_out, pipe_inner).Shape();
-
-        if (!makeWire.IsDone())
-        {
-            return ShapeResult{TopoDS_Shape(), false, "Failed to create pipe"};
-        }
-
         return ShapeResult{pipe_cut, true, ""};
     }
 

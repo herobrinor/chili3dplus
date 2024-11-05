@@ -24,6 +24,7 @@ export class PipeNode extends ParameterShapeNode {
         this.setProperty("points", value);
     }
 
+    @Serializer.serialze()
     @Property.define("pipe.outsideDiameter")
     get outsideDiameter() {
         return this.getPrivateValue("outsideDiameter");
@@ -32,6 +33,7 @@ export class PipeNode extends ParameterShapeNode {
         this.setProperty("outsideDiameter", value);
     }
 
+    @Serializer.serialze()
     @Property.define("pipe.wallThickness")
     get wallThickness() {
         return this.getPrivateValue("wallThickness");
@@ -40,6 +42,7 @@ export class PipeNode extends ParameterShapeNode {
         this.setProperty("wallThickness", value);
     }
 
+    @Serializer.serialze()
     @Property.define("pipe.bendingRadius")
     get bendingRadius() {
         return this.getPrivateValue("bendingRadius");
