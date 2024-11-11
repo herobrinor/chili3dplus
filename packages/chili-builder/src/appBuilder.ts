@@ -2,7 +2,9 @@
 
 import { Application, CommandService, EditEventHandler, EditorService, HotkeyService } from "chili";
 import {
+    DefaultDataExchange,
     I18n,
+    IDataExchange,
     IDocument,
     INode,
     IService,
@@ -90,13 +92,18 @@ export class AppBuilder {
     }
 
     createApp() {
-        return new Application(
-            this._visualFactory!,
-            this._shapeFactory!,
-            this.getServices(),
-            this._storage!,
-            this._window
-        );
+        return new Application({
+            storage: this._storage!,
+            shapeFactory: this._shapeFactory!,
+            visualFactory: this._visualFactory!,
+            services: this.getServices(),
+            mainWindow: this._window,
+            dataExchange: this.initDataExchange(),
+        });
+    }
+
+    initDataExchange(): IDataExchange {
+        return new DefaultDataExchange();
     }
 
     private ensureNecessary() {

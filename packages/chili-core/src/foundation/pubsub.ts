@@ -33,6 +33,8 @@ export interface PubSubEventMap {
     openCommandContext: (command: ICommand) => void;
     closeCommandContext: () => void;
     displayHome: (show: boolean) => void;
+    displayChat: () => void;
+    sendChat: (messages: string) => void;
     showProperties(document: IDocument, nodes: INode[]): void;
     showToast: (message: I18nKeys, ...args: any[]) => void;
     displayError: (message: string) => void;

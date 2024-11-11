@@ -31,6 +31,10 @@
         flex: 1 1 auto;
         width: 0;
     }
+
+    & .chatbar {
+        flex: 0 1 360px;
+    }
 }
 
 .statusbar {

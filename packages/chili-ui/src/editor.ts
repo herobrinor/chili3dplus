@@ -1,6 +1,7 @@
 // Copyright 2022-2023 the Chili authors. All rights reserved. AGPL-3.0 license.
 
 import { Button, CommandKeys, I18nKeys, IApplication, RibbonTab } from "chili-core";
+import { Chat } from "./chat";
 import { div } from "./components";
 import style from "./editor.module.css";
 import { ProjectView } from "./project";
@@ -10,7 +11,7 @@ import { RibbonTabData } from "./ribbon/ribbonData";
 import { Statusbar } from "./statusbar";
 import { LayoutViewport } from "./viewport";
 
-let quickCommands: CommandKeys[] = ["doc.save", "doc.saveToFile", "edit.undo", "edit.redo"];
+let quickCommands: CommandKeys[] = ["doc.save", "doc.saveToFile", "edit.undo", "edit.redo", "chat.show"];
 
 export class Editor extends HTMLElement {
     readonly ribbonContent: RibbonDataContent;
@@ -36,6 +37,7 @@ export class Editor extends HTMLElement {
                         new PropertyView({ className: style.sidebarItem }),
                     ),
                     viewport,
+                    new Chat(style.chatbar),
                 ),
                 new Statusbar(style.statusbar),
             ),

@@ -1,0 +1,148 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.headerPanel {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    flex: 0 1 auto;
+    margin: 0px 12px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.15rem;
+    font-weight: bolder;
+    flex: 1;
+    margin: 2px 6px;
+}
+
+.chatroom {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 0px;
+    overflow-y: auto;
+    justify-content: center;
+    height: calc(100vh - 10rem);
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: var(--background-color);
+}
+
+.chatwindow {
+    flex: 0 1 auto;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    overflow-y: auto;
+    flex-grow: 1;
+    border-radius: 0.5rem;
+    box-shadow:
+        0 10px 15px -3px rgb(0 0 0 / 0.1),
+        0 4px 6px -4px rgb(0 0 0 / 0.1);
+    background-color: var(--panel-background-color);
+}
+
+.inputwindow {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    flex-direction: row;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+    padding-bottom: 0px;
+    gap: 0.5rem;
+    background-color: var(--background-color);
+}
+
+.inputtext {
+    flex: 1 1 auto;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    border: solid;
+    min-height: 32px;
+    overflow-y: auto;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 2px 2px;
+    flex: 0 1 auto;
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        padding: 4px;
+        border-radius: 4px;
+
+        &:hover {
+            background-color: rgba(128, 128, 128, 0.25);
+        }
+    }
+}
+
+.clearbutton {
+    font-size: 16px;
+}
+
+.configbutton {
+    font-size: 16px;
+}
+
+.userbubblebox {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    flex-direction: row-reverse;
+    .icon {
+        width: 30px;
+        height: 30px;
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    .bubble {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        max-width: 80%;
+        background-color: rgb(236 254 255);
+    }
+}
+
+.botbubblebox {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+
+    .icon {
+        width: 30px;
+        height: 30px;
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    .bubble {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        max-width: 80%;
+        background-color: rgb(236 253 245);
+    }
+}
+
+.hidden {
+    display: none;
+}

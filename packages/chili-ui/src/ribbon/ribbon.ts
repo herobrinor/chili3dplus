@@ -229,6 +229,19 @@ export class Ribbon extends HTMLElement {
                         }),
                     ),
                 ),
+                div(
+                    {
+                        className: style.chat,
+                        onclick: () => {
+                            PubSub.default.pub("displayChat");
+                        },
+                    },
+                    svg({
+                        title: "Chat",
+                        className: style.icon,
+                        icon: "icon-chat",
+                    }),
+                ),
             ),
             collection({
                 className: style.tabContentPanel,
